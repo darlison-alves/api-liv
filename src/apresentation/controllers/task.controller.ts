@@ -1,24 +1,33 @@
-import { Controller, Get, Post, Body, Param } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, UseFilters, UsePipes, ValidationPipe } from "@nestjs/common";
 import { TaskService } from "src/application/services/task.service";
 import { Task } from "src/model/entities/task.entity";
+import { HttpExceptionFilter } from "../exceptions/HttpExceptionFilter";
+import { TaskDTO } from "src/model/dto/task.dto";
 
 @Controller("/tasks")
 export class TaskController {
 
-    constructor(private readonly cardService: TaskService){}
+    constructor(private readonly taskService: TaskService){}
 
     @Get()
     public async getCards() {
-        return await this.cardService.findAll(['card']);
+        return await this.taskService.findAll(['card']);
     }
 
     @Post()
-    public async create(@Body() card: Task) {
-        return await this.cardService.create(card);
+    @UsePipes(new ValidationPipe({transform: true}))
+    public async create(@Body() taskdto: TaskDTO) {
+        return await this.taskService.createNewTask(taskdto);
     }
 
     @Get(":id")
+    @UseFilters(new HttpExceptionFilter())
     public async findById( @Param("id") id: number ) {
-        return await this.cardService.findById(id);
+        try {
+            return await this.taskService.findById(id);    
+        } catch (error) {
+            throw error
+        }
+        
     }
 }

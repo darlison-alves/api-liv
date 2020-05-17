@@ -8,8 +8,13 @@ export class Task {
     public id: number;
 
     @Column()
-    public title: string
+    public title: string;
     
     @ManyToOne(type => Card, (card: Card) => card.tasks)
-    public card: Card
+    public card: Card;
+
+    constructor(id: number, title: string) {
+        this.id = id;
+        this.title = title;
+    }
 }

@@ -5,6 +5,7 @@ import { Task } from "src/model/entities/task.entity";
 import { CardRepository } from "src/infra/repositories/card.repository";
 import { CardDto } from "src/model/dto/card.dto";
 import { TaskRepository } from "src/infra/repositories/task.repository";
+import { EntityNotFoundError } from "./exceptions/EntityNotFoundError";
 
 @Injectable()
 export class CardService extends BaseService<Card> {
@@ -12,8 +13,9 @@ export class CardService extends BaseService<Card> {
         super(cardRepository)
     }
 
-    public async addTask(id: number, task: Task): Promise<void> {
+    public async addTask(id: number, idTask: number): Promise<void> {
         const card = await this.repository.findOne(id);
+        const task = await this.taskRepository.findOne(idTask)
         card.tasks.push(task);
         await this.repository.update(id, card);
     }
@@ -23,6 +25,7 @@ export class CardService extends BaseService<Card> {
         card.tasks = [];
         if( cardDto.task ){
             const task = await this.taskRepository.findOne(cardDto.task);
+            if(!task) throw new EntityNotFoundError('task not found!')
             card.tasks.push(task)
         }
         return await this.cardRepository.save(card);
