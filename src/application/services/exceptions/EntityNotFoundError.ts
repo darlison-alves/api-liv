@@ -1,5 +1,7 @@
-export class EntityNotFoundError extends Error {
+import { BaseError } from "./BaseError";
+
+export class EntityNotFoundError extends BaseError {    
     constructor(msg: string = "Entity not found!") {
-        super(msg)
+        super(msg, 404);
     }
 }
