@@ -1,16 +1,24 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { AppController } from './apresentation/controllers/app.controller';
+import { CardController } from './apresentation/controllers/card.controller';
+import { TaskController } from './apresentation/controllers/task.controller';
+
 import { AppService } from './application/services/app.service';
 import { CardService } from './application/services/card.service';
-import { CardController } from './apresentation/controllers/card.controller';
+import { TaskService } from './application/services/task.service';
+
 import { CardModule } from './card.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TaskModule } from './task.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
-    CardModule],
-  controllers: [AppController, CardController],
-  providers: [AppService, CardService],
+    CardModule,
+    TaskModule
+  ],
+  controllers: [AppController, CardController, TaskController],
+  providers: [AppService, CardService, TaskService],
 })
 export class AppModule {}

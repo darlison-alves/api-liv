@@ -12,4 +12,9 @@ export class Card {
 
     @OneToMany(type => Task, (task: Task) => task.card)
     public tasks: Array<Task>;
+
+    constructor(id: number, title: string) {
+        this.id = id;
+        this.title = title;
+    }
 }

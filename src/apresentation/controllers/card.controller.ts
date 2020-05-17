@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param } from "@nestjs/common";
 import { CardService } from "src/application/services/card.service";
-import { Card } from "src/model/entities/card.entity";
+import { CardDto } from "src/model/dto/card.dto";
 
 @Controller("/cards")
 export class CardController {
@@ -9,11 +9,16 @@ export class CardController {
 
     @Get()
     public async getCards() {
-        return await this.cardService.findAll();
+        return await this.cardService.findAll(["tasks"]);
     }
 
     @Post()
-    public async create(@Body() card: Card) {
-        return await this.cardService.create(card);
+    public async create(@Body() card: CardDto) {
+        return await this.cardService.createCard(card);
+    }
+
+    @Get(":id")
+    public async findById( @Param("id") id: number ) {
+        return await this.cardService.findById(id, ['tasks']);
     }
 }
