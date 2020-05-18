@@ -30,4 +30,10 @@ export class CardService extends BaseService<Card> {
         }
         return await this.cardRepository.save(card);
     }
+
+    public async updateCard(idCard: number, cardDto: CardDto): Promise<Card> {
+        const card = await this.cardRepository.findOne(idCard);        
+        card.title = cardDto.title
+        return await this.update(card);
+    }
 }

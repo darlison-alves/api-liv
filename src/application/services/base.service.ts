@@ -29,4 +29,9 @@ export class BaseService<T> {
         console.log("entity", entity);
         return entity
     }
+
+    public async delete(id: number): Promise<boolean> {
+        const result = await this.repository.delete(id);
+        return result.affected ? true : false;
+    }
 }

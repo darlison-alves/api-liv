@@ -19,4 +19,19 @@ export class TaskService extends BaseService<Task> {
         task.card = card;
         return await this.taskRepo.save(task);
     }
+
+    public async updateCard(idTask: number, idCard: number): Promise<Task> {
+        const task = await this.taskRepo.findOne(idTask);
+        const card = await this.cardRepository.findOne(idCard);
+        task.card = card
+        return await this.taskRepo.save(task)
+    }
+
+    public async updateTask(idTask: number, taskDto: TaskDTO): Promise<Task> {
+        const task = await this.taskRepo.findOne(idTask);        
+        task.title = taskDto.title;
+        return await this.update(task);
+        
+    }
+    
 }
