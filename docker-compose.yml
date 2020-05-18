@@ -1,0 +1,37 @@
+version: '3.0'
+services:
+    # web_app:
+    #     build: ./simple-trello/
+    #     ports: 
+    #         - 3000:3000
+    #     environment: 
+    #         - URL_API=web_api
+    #     networks: 
+    #         - web-app-api-network
+    web_api:
+        build: ./api-liv/
+        ports: 
+            - 5000:5000
+        environment: 
+            - URI_DB=db
+        links: 
+            - "db:database"
+        depends_on: 
+            - web_app
+            - db
+        networks: 
+            - postgres-compose-network
+            # - web-app-api-network
+    db: 
+        image: postgres
+        ports: 
+            - 5432:5432
+        environment: 
+            - POSTGRES_PASSWORD=root
+        networks: 
+            - postgres-compose-network
+networks: 
+    postgres-compose-network:
+        driver: bridge
+    web-app-api-network:
+        driver: bridge

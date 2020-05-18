@@ -14,7 +14,16 @@ import { TaskModule } from './task.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.URI_DB,
+      port: 5432,
+      username: 'postgres',
+      password: 'root',
+      database: 'postgres',
+      entities: ["dist/model/entities/*.js"],
+      synchronize: true,
+    }),
     CardModule,
     TaskModule
   ],
